@@ -38,4 +38,11 @@ steps:
     targetPath: '$(Build.ArtifactStagingDirectory)'
     artifact: 'app-artifact'
 
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'svc_sonarcloud'
+    organization: 'sornarrg'
+    scannerMode: 'MSBuild'
+    projectKey: 'testkeyshashi'
+
 - task: SonarCloudAnalyze@1
