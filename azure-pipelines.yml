@@ -20,24 +20,22 @@ steps:
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
-    
 
 
-- task: SonarCloudPrepare@1
+- task: SonarQubePrepare@5
   inputs:
-    SonarCloud: 'svc_sonarcloud'
-    organization: 'sornarrg'
+    SonarQube: 'svc_sonarqube'
     scannerMode: 'MSBuild'
-    projectKey: 'testkeyshashi'
-
+    projectKey: 'testproject'
+    projectName: 'testproject'
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-- task: SonarCloudAnalyze@1
 
-- task: SonarCloudPublish@1
+- task: SonarQubeAnalyze@5
+- task: SonarQubePublish@5
   inputs:
     pollingTimeoutSec: '300'
