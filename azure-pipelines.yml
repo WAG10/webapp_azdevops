@@ -38,8 +38,4 @@ steps:
     targetPath: '$(Build.ArtifactStagingDirectory)'
     artifact: 'app-artifact'
 
-- task: WhiteSource@21
-  inputs:
-    cwd: '$(System.DefaultWorkingDirectory)'
-    projectName: 'API cicd'
-    
+- task: SonarCloudAnalyze@1
