@@ -16,12 +16,11 @@ variables:
 
 steps:
 - task: NuGetToolInstaller@1
-  inputs:
-    versionSpec:  6.3.1
-
+  
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
+    
 
 
 - task: SonarCloudPrepare@1
@@ -31,6 +30,12 @@ steps:
     scannerMode: 'MSBuild'
     projectKey: 'testkeyshashi'
 
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
 - task: SonarCloudAnalyze@1
 
 - task: SonarCloudPublish@1
