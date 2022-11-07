@@ -5,7 +5,7 @@ parameters:
     displayName: Keyvault Name
     type: string
     default: testakv12345 
-  - name: null
+  - name: secret_name
     displayName: Secret name
     type: string
     default: test
