@@ -1,33 +1,25 @@
- # ASP.NET Core (.NET Framework)
-# Build and test ASP.NET Core projects targeting the full .NET Framework.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-
 trigger:
-- master
-
+  - master
 parameters:
   - name: keyvault_name
     displayName: Keyvault Name
     type: string
-  
-  - name:
+  - name: null
     displayName: Secret name
     type: string
-    
-
   - name: secret_value
     displayName: Secret value
     type: string
-
 pool:
-  vmImage: 'windows-latest'
-
+  vmImage: windows-latest
 steps:
-   - task: PowerShell@2
-     inputs:
-      targetType: 'inline'
-      script: |
-        $secretvalue = ConvertTo-SecureString ${parameters.secret_value} -AsPlainText -force
-        
-        $secret = Set-AzKeyVaultSecret -VaultName ${parameters.keyvault_name} -Name ${parameters.secret_name}  -SecretValue $secretvalue
+  - task: PowerShell@2
+    inputs:
+      targetType: inline
+      script: >
+        $secretvalue = ConvertTo-SecureString ${parameters.secret_value}
+        -AsPlainText -force
+
+
+        $secret = Set-AzKeyVaultSecret -VaultName ${parameters.keyvault_name}
+        -Name ${parameters.secret_name}  -SecretValue $secretvalue
