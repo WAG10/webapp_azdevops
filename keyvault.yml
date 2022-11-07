@@ -16,11 +16,10 @@ parameters:
 pool:
   vmImage: windows-latest
 steps:
-  - task: PowerShell@2
-    inputs:
-      targetType: inline
-      script: >
-        $secretvalue = ConvertTo-SecureString ${{parameters.secret_value}}
-        -AsPlainText -force
-        $secret = Set-AzKeyVaultSecret -VaultName ${{parameters.keyvault_name}}
-        -Name ${{parameters.secret_name}}  -SecretValue $secretvalue
+ - task: AzurePowerShell@5
+   inputs:
+     azureSubscription: 'Pay-As-You-Go(6cff3a05-dfaf-45ce-ae38-3521a14c2cf7)'
+     ScriptType: 'InlineScript'
+     Inline: |
+       $secretvalue = ConvertTo-SecureString ${{parameters.secret_value}}  -AsPlainText -force
+        $secret = Set-AzKeyVaultSecret -VaultName ${{parameters.keyvault_name}} -Name ${{parameters.secret_name}}  -SecretValue $secretvalue
