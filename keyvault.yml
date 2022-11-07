@@ -9,18 +9,15 @@ trigger:
 parameters:
   - name: keyvault_name
     displayName: Keyvault Name
-    default: " *** put keyvault name here ***"
     type: string
   
   - name:
     displayName: Secret name
-    default: " *** put secret name here ***"
     type: string
     
 
   - name: secret_value
     displayName: Secret value
-    default: " *** put secret value here ***"
     type: string
 
 pool:
