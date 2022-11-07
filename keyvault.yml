@@ -12,7 +12,7 @@ parameters:
     default: " *** put keyvault name here ***"
     type: string
   
-  - name: secret_name
+  - name:
     displayName: Secret name
     default: " *** put secret name here ***"
     type: string
@@ -26,33 +26,11 @@ parameters:
 pool:
   vmImage: 'windows-latest'
 
-variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
-
 steps:
-- task: NuGetToolInstaller@1
-  
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
-
-
-- task: SonarQubePrepare@5
-  inputs:
-    SonarQube: 'svc_sonarqube'
-    scannerMode: 'MSBuild'
-    projectKey: 'testproject'
-    projectName: 'testproject'
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: SonarQubeAnalyze@5
-- task: SonarQubePublish@5
-  inputs:
-    pollingTimeoutSec: '300'
+   - task: PowerShell@2
+     inputs:
+      targetType: 'inline'
+      script: |
+        $secretvalue = ConvertTo-SecureString ${parameters.secret_value} -AsPlainText -force
+        
+        $secret = Set-AzKeyVaultSecret -VaultName ${parameters.keyvault_name} -Name ${parameters.secret_name}  -SecretValue $secretvalue
