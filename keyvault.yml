@@ -4,12 +4,15 @@ parameters:
   - name: keyvault_name
     displayName: Keyvault Name
     type: string
+    default: testakv12345 
   - name: null
     displayName: Secret name
     type: string
+    default: test
   - name: secret_value
     displayName: Secret value
     type: string
+    default: test123
 pool:
   vmImage: windows-latest
 steps:
@@ -17,9 +20,7 @@ steps:
     inputs:
       targetType: inline
       script: >
-        $secretvalue = ConvertTo-SecureString ${parameters.secret_value}
+        $secretvalue = ConvertTo-SecureString ${{parameters.secret_value}}
         -AsPlainText -force
-
-
-        $secret = Set-AzKeyVaultSecret -VaultName ${parameters.keyvault_name}
-        -Name ${parameters.secret_name}  -SecretValue $secretvalue
+        $secret = Set-AzKeyVaultSecret -VaultName ${{parameters.keyvault_name}}
+        -Name ${{parameters.secret_name}}  -SecretValue $secretvalue
